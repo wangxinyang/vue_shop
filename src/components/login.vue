@@ -60,9 +60,9 @@ export default {
             console.log(res.data)
             const data = res.data
             if (data.meta.status !== 200) {
-              this.$message.error('登録失敗')
+              this.$message_error('登録失敗')
             } else {
-              this.$message.success('登録成功')
+              this.$message_success('登録成功')
               // tokenを保存する
               window.sessionStorage.setItem('token', data.data.token)
               // /homeに遷移する
@@ -71,7 +71,7 @@ export default {
           })
           .catch(err => {
             console.error(err)
-            this.$message.error('登録失敗')
+            this.$message_error('登録失敗')
           })
       })
     }

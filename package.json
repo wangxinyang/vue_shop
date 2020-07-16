@@ -15,6 +15,7 @@
     "vue-router": "^3.2.0"
   },
   "devDependencies": {
+    "@babel/runtime-corejs3": "^7.10.5",
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
     "@vue/cli-plugin-router": "~4.4.0",

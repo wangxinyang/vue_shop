@@ -1,5 +1,24 @@
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
   padding: 0;
   margin: 0;
+}
+
+.el-breadcrumb {
+  padding-bottom: 25px;
+}
+
+.el-card {
+  box-shadow: 0 10px 10px rgb(0, 0, 0, 0.15) !important;
+}
+
+.el-table {
+  margin-top: 15px;
+  font-size: 12px;
+}
+
+.el-pagination {
+  margin-top: 15px;
 }
