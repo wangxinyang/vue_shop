@@ -1,24 +1,16 @@
 # vue_shop
 
-## Project setup
-```
-yarn install
-```
+# フロントエンド
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+- Vue2
+- Vue-Router3
+- axios
+- element-ui2.4.5
 
-### Compiles and minifies for production
-```
-yarn build
-```
+#バックエンド
 
-### Lints and fixes files
-```
-yarn lint
-```
+- nodeJs
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# データベース
+
+- MySQL 5.7
