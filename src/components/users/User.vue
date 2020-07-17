@@ -21,7 +21,7 @@
         </el-row>
         <!-- リストテーブル -->
         <el-table :data="userList" stripe border>
-          <el-table-column type="index"></el-table-column>
+          <el-table-column type="index" label="No."></el-table-column>
           <el-table-column prop="username" label="名前"></el-table-column>
           <el-table-column prop="email" label="メールアドレス"></el-table-column>
           <el-table-column prop="mobile" label="携帯"></el-table-column>
@@ -40,7 +40,7 @@
                 <el-button type="danger" icon="el-icon-delete" size="small" @click="removeUserById(scope.row.id)"></el-button>
               </el-tooltip>
               <el-tooltip effect="dark" content="権限" placement="top" :enterable="false">
-                <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
+                <el-button type="warning" icon="el-icon-setting" size="small" @click="showRoleDialog(scope.row)"></el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -94,6 +94,23 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="showEditDialogVisible = false">取消し</el-button>
             <el-button type="primary" @click="editUser">確定</el-button>
+          </span>
+        </el-dialog>
+        <!-- roledialog -->
+        <el-dialog title="ロール配分" :visible.sync="showRoleDialogVisible" width="50%" hide-r>
+          <div>
+            <p>該当ユーザー名: {{this.userInfo.username}}</p>
+            <p>該当ロール: {{this.userInfo.role_name}}</p>
+            <p>
+              ロールを配布:
+              <el-select v-model="selectedValue" placeholder="選択してください">
+                <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+              </el-select>
+            </p>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showRoleDialogVisible = false">取消し</el-button>
+            <el-button type="primary" @click="setNewRole">確定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -172,7 +189,11 @@ export default {
           { required: true, message: '携帯を入力してください', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' }
         ]
-      }
+      },
+      showRoleDialogVisible: false,
+      userInfo: {},
+      roleList: {},
+      selectedValue: ''
     }
   },
 
@@ -208,7 +229,6 @@ export default {
     userStatusChanged (userInfo) {
       this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
         .then(res => {
-          console.log(res)
           if (res.data.meta.status !== 200) {
             userInfo.mg_state = !userInfo.mg_state
             return this.$message_error('更新失敗')
@@ -301,6 +321,44 @@ export default {
       }).catch(() => {
         this.$message_error('キャンセルしました')
       })
+    },
+
+    getRoleList () {
+      this.$http.get('roles')
+        .then(res => {
+          if (res.data.meta.status !== 200) {
+            return this.$message_error('データを読み込むが失敗しました')
+          } else {
+            this.roleList = res.data.data
+          }
+        })
+        .catch(err => {
+          return this.$message_error('データを読み込むが失敗しました')
+        })
+    },
+
+    showRoleDialog (userInfo) {
+      this.userInfo = userInfo
+      this.roleList = this.getRoleList()
+      this.showRoleDialogVisible = true
+    },
+
+    setNewRole () {
+      if (!this.selectedValue) {
+        return this.$message_error('ロールを選択してください')
+      }
+      this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectedValue })
+        .then(res => {
+          if (res.data.meta.status !== 200) {
+            return this.$message_error('保存失敗')
+          } else {
+            this.getUserList()
+            this.showRoleDialogVisible = false
+          }
+        })
+        .catch(err => {
+          return this.$message_error('保存失敗')
+        })
     }
   }
 }

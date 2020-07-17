@@ -57,7 +57,6 @@ export default {
         if (!valid) return
         this.$http.post('login', this.loginForm)
           .then(res => {
-            console.log(res.data)
             const data = res.data
             if (data.meta.status !== 200) {
               this.$message_error('登録失敗')
@@ -70,7 +69,6 @@ export default {
             }
           })
           .catch(err => {
-            console.error(err)
             this.$message_error('登録失敗')
           })
       })

@@ -76,7 +76,6 @@ export default {
     getMenuList () {
       this.$http.get('menus')
         .then(res => {
-          console.log(res)
           if (res.data.meta.status !== 200) {
             return this.$message_error(res.data.meta.msg)
           } else {
@@ -84,7 +83,6 @@ export default {
           }
         })
         .catch(err => {
-          console.error(err)
         })
     },
     toggleCollapse () {
